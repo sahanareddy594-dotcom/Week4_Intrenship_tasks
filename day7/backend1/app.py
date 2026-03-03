@@ -46,7 +46,7 @@ def register():
 
     return render_template("register.html")
 
-S
+
 @app.route("/", methods=["GET","POST"])
 def login():
     if request.method=="POST":
@@ -125,4 +125,5 @@ def logout():
 
 if __name__=="__main__":
     app.run(debug=True)
+
 
