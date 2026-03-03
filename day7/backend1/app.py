@@ -4,12 +4,13 @@ import sqlite3
 app = Flask(__name__)
 app.secret_key = "secret"
 
-
+# ----------------------
+# CREATE DATABASE TABLES
+# ----------------------
 def init_db():
     conn = sqlite3.connect("project.db")
     cur = conn.cursor()
 
-    
     cur.execute("""
         CREATE TABLE IF NOT EXISTS users(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -18,7 +19,6 @@ def init_db():
         )
     """)
 
-    
     cur.execute("""
         CREATE TABLE IF NOT EXISTS students(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +30,13 @@ def init_db():
     conn.commit()
     conn.close()
 
+# ✅ CALL FUNCTION AFTER DEFINING IT
+init_db()
 
+
+# ----------------------
+# REGISTER
+# ----------------------
 @app.route("/register", methods=["GET","POST"])
 def register():
     if request.method=="POST":
@@ -47,6 +53,9 @@ def register():
     return render_template("register.html")
 
 
+# ----------------------
+# LOGIN
+# ----------------------
 @app.route("/", methods=["GET","POST"])
 def login():
     if request.method=="POST":
@@ -116,11 +125,12 @@ def delete(id):
     conn.close()
     return redirect("/list")
 
+
 @app.route("/logout")
 def logout():
     session.pop("user",None)
     return redirect("/")
 
+
 if __name__=="__main__":
-    init_db()
     app.run(debug=True)
